@@ -8,6 +8,7 @@ setup(name='chineseflashcards',
       author_email='k@kerrickstaley.com',
       license='MIT',
       packages=['chineseflashcards'],
+      package_data={'chineseflashcards': ['cedict.txt']},
       zip_safe=False,
       install_requires=[
         'genanki>=0.1',
