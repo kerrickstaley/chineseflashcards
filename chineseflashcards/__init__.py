@@ -50,7 +50,7 @@ class Classifier:
   def parse(cls, s):
     if '|' in s:
       trad, rest = s.split('|')
-      simp, rest = s.split('[')
+      simp, rest = rest.split('[')
     else:
       trad, rest = s.split('[')
       simp = trad
@@ -130,6 +130,24 @@ def prettify_pinyin(p, lower=False):
   if lower:
     rv = rv.lower()
   return rv
+
+
+def prettify_classifiers(clfrs, simp_first=False):
+  rv = []
+  for clfr in clfrs:
+    first, second = clfr.trad, clfr.simp
+    if simp_first:
+      first, second = second, first
+
+    s = first
+    if second != first:
+      s += '|' + second
+
+    s += '(' + prettify_pinyin(clfr.pinyin, True) + ')'
+
+    rv.append(s)
+
+  return ', '.join(rv)
 
 
 @functools.lru_cache()
@@ -228,8 +246,15 @@ class ChineseDeck(genanki.Deck):
     word = self._lookup_word(word, alt_word, pinyin)
     note = genanki.Note(
       load_chinese_note_model(),
-      [word.simp, word.trad if word.trad != word.simp else '',
-       prettify_pinyin(word.pinyin), '/'.join(word.defs), '', '', ''])
+      [
+        word.simp,
+        word.trad if word.trad != word.simp else '',
+        prettify_pinyin(word.pinyin, True),
+        '/'.join(word.defs),
+        prettify_classifiers(word.clfrs),
+        '',
+        '',
+      ])
     note.add_card(0)
     note.add_card(1)
     self.add_note(note)
