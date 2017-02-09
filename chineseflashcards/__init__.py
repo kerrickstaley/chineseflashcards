@@ -4,9 +4,19 @@ import genanki
 import os.path
 import re
 
+CHINESE_NOTE_MODEL_ID = 2828301746
 CEDICT_FILE = os.path.join(
   os.path.dirname(os.path.abspath(__file__)),
   'cedict.txt')
+FIELDS_FILE = os.path.join(
+  os.path.dirname(os.path.abspath(__file__)),
+  'fields.json')
+TEMPLATES_FILE = os.path.join(
+  os.path.dirname(os.path.abspath(__file__)),
+  'templates.yaml')
+CSS_FILE = os.path.join(
+  os.path.dirname(os.path.abspath(__file__)),
+  'cards.css')
 
 
 class CedictWord:
@@ -139,17 +149,31 @@ def load_cedict():
   return dict(rv)
 
 
+@functools.lru_cache()
+def load_chinese_note_model():
+  with open(FIELDS_FILE) as fields, open(TEMPLATES_FILE) as templates, open(CSS_FILE) as css:
+    templates = templates.read()
+    templates = templates.replace(
+      'CHARACTER',
+      '{{#Traditional}}<span class="nobr">{{Traditional}}</span>|{{/Traditional}}'
+      '<span class="nobr">{{Simplified}}</span>')
+    templates = templates.replace('PINYIN', '{{#Taiwan Pinyin}}{{Taiwan Pinyin}} | {{/Taiwan Pinyin}}{{Pinyin}}')
+    return genanki.Model(
+      CHINESE_NOTE_MODEL_ID,
+      'Chinese',
+      fields=fields,
+      templates=templates,
+      css=css,
+    )
+
+
 class MultipleMatchingWordsException(Exception):
   pass
 
+
 class ChineseDeck(genanki.Deck):
   def __init__(self, deck_id=None, name=None):
-    flds = open('/home/kerrick/Open_Source_Contrib/hsk_flashcards_rust/src/flds.json')
-    templates = open('/home/kerrick/Open_Source_Contrib/hsk_flashcards_rust/src/templates.yaml').read()
-    templates = templates.replace('CHARACTER', '{{#Traditional}}<span class="nobr">{{Traditional}}</span>|{{/Traditional}}<span class="nobr">{{Simplified}}</span>')
-    templates = templates.replace('PINYIN', '{{#Taiwan Pinyin}}{{Taiwan Pinyin}} | {{/Taiwan Pinyin}}{{Pinyin}}')
-    css = open('/home/kerrick/Open_Source_Contrib/hsk_flashcards_rust/src/card.css')
-    super().__init__(deck_id, name, flds, templates, css)
+    super().__init__(deck_id, name)
     self._cedict = load_cedict()
 
   def _lookup_word(self, word, alt_word, pinyin):
@@ -184,9 +208,9 @@ class ChineseDeck(genanki.Deck):
   def add_word(self, word, alt_word=None, pinyin=None):
     word = self._lookup_word(word, alt_word, pinyin)
     note = genanki.Note(
-      None,
+      load_chinese_note_model(),
       [word.simp, word.trad if word.trad != word.simp else '',
-      prettify_pinyin(word.pinyin), '/'.join(word.defs), '', '', ''])
+       prettify_pinyin(word.pinyin), '/'.join(word.defs), '', '', ''])
     note.add_card(0)
     note.add_card(1)
     self.add_note(note)

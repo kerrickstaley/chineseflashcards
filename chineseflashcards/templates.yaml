@@ -1,0 +1,108 @@
+- name: English
+  qfmt: |
+    <div class="english_wrapper">
+      {{English}}
+    </div>
+  afmt: |
+    {{FrontSide}}
+
+    <hr id=answer>
+    <div class="character">
+      CHARACTER
+    </div>
+
+    <div class="pinyin">
+      PINYIN
+    </div>
+
+    {{#Classifier}}
+    <div class="classifier">
+      CL: {{Classifier}}
+    </div>
+    {{/Classifier}}
+- name: Simplified
+  qfmt: |
+    <div class="character">
+      {{Simplified}}
+    </div>
+  afmt: |
+    {{FrontSide}}
+
+    <hr id=answer>
+
+    <div class="pinyin">
+      PINYIN
+    </div>
+
+    {{#Traditional}}
+    <div class="character_wrapper">
+      <span class="character">{{Traditional}}</span>
+      <span class="character_type">&nbsp;&nbsp;Trad</span>
+    </div>
+    {{/Traditional}}
+
+    {{#Classifier}}
+    <div class="classifier">
+      CL: {{Classifier}}
+    </div>
+    {{/Classifier}}
+
+    <div class="english_wrapper">
+      {{English}}
+    </div>
+- name: Traditional
+  qfmt: |
+    <div class="character">
+      {{Traditional}}
+    </div>
+  afmt: |
+    {{FrontSide}}
+
+    <hr id=answer>
+
+    <div class="pinyin">
+      PINYIN
+    </div>
+
+    <div class="character_wrapper">
+      <span class="character">{{Simplified}}</span>
+      <span class="character_type">&nbsp;&nbsp;Simp</span>
+    </div>
+
+    {{#Classifier}}
+    <div class="classifier">
+      CL: {{Classifier}}
+    </div>
+    {{/Classifier}}
+
+    <div class="english_wrapper">
+      {{English}}
+    </div>
+- name: Pinyin
+  qfmt: |
+    <div class="pinyin">
+      PINYIN
+    </div>
+    {{#Words With Same Pinyin}}
+      <div class="words_with_same_pinyin">
+        Not:&ensp;{{Words With Same Pinyin}}
+      </div>
+    {{/Words With Same Pinyin}}
+  afmt: |
+    {{FrontSide}}
+
+    <hr id=answer>
+
+    <div class="english_wrapper">
+      {{English}}
+    </div>
+
+    <div class="character">
+      CHARACTER
+    </div>
+
+    {{#Classifier}}
+    <div class="classifier">
+      CL: {{Classifier}}
+    </div>
+    {{/Classifier}}

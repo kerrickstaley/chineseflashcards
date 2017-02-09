@@ -1,0 +1,76 @@
+.card {
+  font-family: arial;
+  font-size: 1.2em;
+  text-align: center;
+  color: black;
+  background-color: white;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+.character_wrapper {
+  position: relative;
+}
+
+.character {
+  font-size: 3em;
+}
+
+.character_type {
+  color: #AAA;
+  position: absolute;
+  bottom: 0.5em;
+}
+
+.pinyin {
+  font-size: 2em;
+}
+
+.words_with_same_pinyin {
+  font-size: 1.2em;
+  color: #888;
+}
+
+.classifier {
+  font-size: 1.2em;
+}
+
+.english_wrapper > ol {
+  display: inline-block;
+  text-align: left;
+}
+
+.nobr {
+  display:inline-block;
+}
+
+@media (min-width: 480px) {
+  /* On devices at least 480px wide, put a 15% margin on both sides of the
+     English definitions list */
+  .english_wrapper {
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+}
+
+.card1 {
+  background-color: #ffffff;
+}
+
+.tone1 {
+  color: #ff0000;
+}
+
+.tone2 {
+  color: #d89000;
+}
+
+.tone3 {
+  color: #00a000;
+}
+
+.tone4 {
+  color: #0000ff;
+}
