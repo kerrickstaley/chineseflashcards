@@ -171,39 +171,58 @@ class MultipleMatchingWordsException(Exception):
   pass
 
 
+class NoMatchingWordsException(Exception):
+  pass
+
+
 class ChineseDeck(genanki.Deck):
   def __init__(self, deck_id=None, name=None):
     super().__init__(deck_id, name)
     self._cedict = load_cedict()
 
   def _lookup_word(self, word, alt_word, pinyin):
-    candidates = self._cedict[word]
+    candidates = self._cedict.get(word, [])
 
-    new_candidates = []
+    matching_candidates = []
     for candidate in candidates:
       if alt_word not in [None, candidate.simp, candidate.trad]:
         continue
       if pinyin not in [None, candidate.pinyin]:
         continue
-      new_candidates.append(candidate)
+      matching_candidates.append(candidate)
 
-    candidates = new_candidates
-    if len(candidates) > 1:
-      new_candidates = []
-      for candidate in candidates:
+    if len(matching_candidates) > 1:
+      # trimmed candidates excludes entries that are just variants of another entry
+      trimmed_candidates = []
+      for candidate in matching_candidates:
         if (candidate.defs[0].startswith('variant of')
             or candidate.defs[0].startswith('old variant of')):
           continue
         if re.match(r'see [^ ]+\[[^\]]+\]', candidate.defs[0]):
           continue
-      candidates = new_candidates
+        trimmed_candidates.append(candidate)
+    else:
+      trimmed_candidates = matching_candidates
 
-    if len(candidates) > 1:
+    if len(trimmed_candidates) > 1:
+      help_text = 'you need to disambiguate by passing '
+      if alt_word is None and pinyin is None:
+        help_text += 'alt_word and/or pinyin'
+      elif alt_word is None:
+        help_text += 'alt_word'
+      else:  # pinyin is None
+        help_text += 'pinyin'
+
       raise MultipleMatchingWordsException(
-        'multiple entries for word={} alt_word={} pinyin={}: {}'.format(
-          repr(word), repr(alt_word), repr(pinyin), candidates))
+        'multiple entries for word={} alt_word={} pinyin={}; {}: {}'.format(
+          repr(word), repr(alt_word), repr(pinyin), help_text, matching_candidates))
 
-    return candidates[0]
+    if not trimmed_candidates:
+      raise NoMatchingWordsException(
+        'no entries for word={} alt_word={} pinyin={}'.format(
+          repr(word), repr(alt_word), repr(pinyin)))
+
+    return trimmed_candidates[0]
 
   def add_word(self, word, alt_word=None, pinyin=None):
     word = self._lookup_word(word, alt_word, pinyin)
