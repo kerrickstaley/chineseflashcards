@@ -271,6 +271,7 @@ class ChineseDeck(genanki.Deck):
         prettify_pinyin(word.tw_pinyin or ''),
         '',
       ])
-    note.add_card(0)
-    note.add_card(1)
+    if word.simp != word.trad:
+      note.add_card(2)  # trad
+    note.add_card(1)  # simp
     self.add_note(note)
