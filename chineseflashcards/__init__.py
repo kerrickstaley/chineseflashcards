@@ -133,6 +133,9 @@ def prettify_pinyin(p, lower=False):
 
 
 def prettify_classifiers(clfrs, simp_first=False):
+  if clfrs is None:
+    return ''
+
   rv = []
   for clfr in clfrs:
     first, second = clfr.trad, clfr.simp
@@ -252,7 +255,7 @@ class ChineseDeck(genanki.Deck):
         prettify_pinyin(word.pinyin, True),
         '/'.join(word.defs),
         prettify_classifiers(word.clfrs),
-        prettify_pinyin(word.tw_pinyin),
+        prettify_pinyin(word.tw_pinyin or ''),
         '',
       ])
     note.add_card(0)
