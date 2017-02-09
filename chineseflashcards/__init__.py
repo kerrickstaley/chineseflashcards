@@ -115,6 +115,19 @@ def toned_syl(syl):
   return ''.join(rv)
 
 
+def prettify_defs(defs):
+  pieces = ['<ol>']
+
+  for def_ in defs:
+    pieces.append('<li>')
+    pieces.append(def_)
+    pieces.append('</li>')
+
+  pieces.append('</ol>')
+
+  return ''.join(pieces)
+
+
 def prettify_pinyin(p, lower=False):
   rv = []
   for syl in p.split():
@@ -253,7 +266,7 @@ class ChineseDeck(genanki.Deck):
         word.simp,
         word.trad if word.trad != word.simp else '',
         prettify_pinyin(word.pinyin, True),
-        '/'.join(word.defs),
+        prettify_defs(word.defs),
         prettify_classifiers(word.clfrs),
         prettify_pinyin(word.tw_pinyin or ''),
         '',
