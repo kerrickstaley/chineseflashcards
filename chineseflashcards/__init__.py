@@ -1,7 +1,6 @@
 import collections
 import functools
 import genanki
-import iterutils
 import os.path
 import re
 
