@@ -252,7 +252,7 @@ class ChineseDeck(genanki.Deck):
         prettify_pinyin(word.pinyin, True),
         '/'.join(word.defs),
         prettify_classifiers(word.clfrs),
-        '',
+        prettify_pinyin(word.tw_pinyin),
         '',
       ])
     note.add_card(0)
