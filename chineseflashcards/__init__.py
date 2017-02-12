@@ -19,6 +19,18 @@ CSS_FILE = os.path.join(
   'cards.css')
 
 
+class ChineseNote(genanki.Note):
+  @property
+  def guid(self):
+    # match the format used by hsk_flashcards_rust, normally we'd just do guid_for(simp, trad, pinyin)
+    return genanki.guid_for(' '.join([
+      'kerrick hsk',
+      self.fields[0],  # simp
+      self.fields[1],  # trad
+      self.fields[2],  # pinyin
+    ]))
+
+
 class CedictWord:
   def __init__(self, trad, simp, pinyin, tw_pinyin, defs, clfrs):
     self.trad = trad
@@ -260,7 +272,7 @@ class ChineseDeck(genanki.Deck):
 
   def add_word(self, word, alt_word=None, pinyin=None):
     word = self._lookup_word(word, alt_word, pinyin)
-    note = genanki.Note(
+    note = ChineseNote(
       load_chinese_note_model(),
       [
         word.simp,
