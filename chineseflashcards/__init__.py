@@ -198,18 +198,19 @@ def load_cedict():
 @functools.lru_cache()
 def load_chinese_note_model():
   with open(FIELDS_FILE) as fields, open(TEMPLATES_FILE) as templates, open(CSS_FILE) as css:
-    templates = templates.read()
-    templates = templates.replace(
+    templates_formatted = templates.read()
+    templates_formatted = templates_formatted.replace(
       'CHARACTER',
       '{{#Traditional}}<span class="nobr">{{Traditional}}</span>|{{/Traditional}}'
       '<span class="nobr">{{Simplified}}</span>')
-    templates = templates.replace('PINYIN', '{{#Taiwan Pinyin}}{{Taiwan Pinyin}} | {{/Taiwan Pinyin}}{{Pinyin}}')
+    templates_formatted = templates_formatted.replace(
+      'PINYIN', '{{#Taiwan Pinyin}}{{Taiwan Pinyin}} | {{/Taiwan Pinyin}}{{Pinyin}}')
     return genanki.Model(
       CHINESE_NOTE_MODEL_ID,
       'Chinese',
-      fields=fields,
-      templates=templates,
-      css=css,
+      fields=fields.read(),
+      templates=templates_formatted,
+      css=css.read(),
     )
 
 
