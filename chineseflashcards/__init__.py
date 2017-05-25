@@ -235,7 +235,7 @@ class ChineseDeck(genanki.Deck):
 
     matching_candidates = []
     for candidate in candidates:
-      if alt_word not in [None, candidate.simp, candidate.trad]:
+      if alt_word and sorted([candidate.simp, candidate.trad]) != sorted([word, alt_word]):
         continue
       if pinyin not in [None, candidate.pinyin]:
         continue
