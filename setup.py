@@ -12,4 +12,5 @@ setup(name='chineseflashcards',
       zip_safe=False,
       install_requires=[
         'genanki>=0.1',
+        'pyyaml>=3.12',
       ])

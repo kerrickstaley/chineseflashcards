@@ -3,6 +3,8 @@ import functools
 import genanki
 import os.path
 import re
+import yaml
+
 
 CHINESE_NOTE_MODEL_ID = 2828301746
 CEDICT_FILE = os.path.join(
@@ -229,8 +231,13 @@ class ChineseDeck(genanki.Deck):
   def __init__(self, deck_id=None, name=None):
     super().__init__(deck_id, name)
     self._cedict = load_cedict()
+    self.preferred_words = {}
 
   def _lookup_word(self, word, alt_word, pinyin):
+    if word in self.preferred_words:
+      alt_word = self.preferred_words[word].get('alt_word')
+      pinyin = self.preferred_words[word].get('pinyin')
+
     candidates = self._cedict.get(word, [])
 
     matching_candidates = []
@@ -273,6 +280,68 @@ class ChineseDeck(genanki.Deck):
           repr(word), repr(alt_word), repr(pinyin)))
 
     return trimmed_candidates[0]
+
+  def add_preferred_words(self, dict_):
+    """
+    :param dict_: A dict where each key is a word and each value is another dict with one or both of the
+        keys `pinyin` and `alt_word`. If you add the word in a later call to `add_word`, these values will be used to
+        disambiguate which CEDICT entry to use.
+
+    For example, you can pass the dict
+
+      {
+        '年': {
+          'alt_word': '年',
+          'pinyin': 'nian2',
+        },
+        '听': {
+          'pinyin': 'ting1',
+        },
+      }
+
+    This means that the entry
+
+      年 年 [nian2] /year/CL:個|个[ge4]/
+
+    will be used for 年, instead of the entry
+
+      秊 年 [nian2] /grain/harvest (old)/variant of 年[nian2]/
+
+    or
+
+      年 年 [Nian2] /surname Nian/
+
+    Similarly, the more common meaning of 听 will be used.
+
+    TODO: naming here is kinda meh, clean it up.
+    TODO: need tests, there's some weird behavior depending on where you pass simp vs trad.
+    """
+    self.preferred_words.update(dict_)
+
+  def add_preferred_words_yaml(self, yaml_):
+    """
+    Same as `add_preferred_words`, but takes a YAML string.
+    :param yaml_: A YAML string representing preferred words to add.
+
+    For example, you can pass the string
+
+        '''
+        年:
+          pinyin: nian2
+          alt_word: 年
+        听:
+          pinyin: ting1
+        '''
+    """
+    self.add_preferred_words(yaml.load(yaml_))
+
+  def add_preferred_words_yaml_from_file(self, path):
+    """
+    Same as add_preferred_words_yaml, but loads from a file.
+    :param path: path to file.
+    """
+    with open(path) as h:
+      self.add_preferred_words_yaml(h.read())
 
   def add_word(self, word, alt_word=None, pinyin=None):
     word = self._lookup_word(word, alt_word, pinyin)
