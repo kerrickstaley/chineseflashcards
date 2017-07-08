@@ -395,3 +395,17 @@ class ChineseDeck(genanki.Deck):
         '',
       ])
     self.add_note(note)
+
+  def add_vocab_list_word(self, vocab_word):
+    note = ChineseNote(
+      fields=[
+        vocab_word.simp,
+        vocab_word.trad if vocab_word.trad != vocab_word.simp else '',
+        prettify_pinyin(vocab_word.pinyin, True),
+        prettify_defs(vocab_word.defs),
+        prettify_classifiers(vocab_word.clfrs),
+        prettify_pinyin(vocab_word.tw_pinyin or ''),
+        # TODO: get rid of this last field ("words with same pinyin")
+        '',
+      ])
+    self.add_note(note)
