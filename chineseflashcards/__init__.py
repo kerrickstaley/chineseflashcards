@@ -96,21 +96,33 @@ def _parse_line(line):
     m.group(1), m.group(2), m.group(3), tw_pinyin, actual_defs, clfrs)
 
 
-def toned_char(c, tone):
-  data = [
-    ['ā', 'á', 'ǎ', 'à', 'a'],
-    ['ē', 'é', 'ě', 'è', 'e'],
-    ['ī', 'í', 'ǐ', 'ì', 'i'],
-    ['ō', 'ó', 'ǒ', 'ò', 'o'],
-    ['ū', 'ú', 'ǔ', 'ù', 'u'],
-    ['ǖ', 'ǘ', 'ǚ', 'ǜ', 'ü'],
-  ]
-  for row in data:
-    if row[4] == c:
+DIACRITIC_VOWELS = [
+  ['ā', 'á', 'ǎ', 'à', 'a'],
+  ['ē', 'é', 'ě', 'è', 'e'],
+  ['ī', 'í', 'ǐ', 'ì', 'i'],
+  ['ō', 'ó', 'ǒ', 'ò', 'o'],
+  ['ū', 'ú', 'ǔ', 'ù', 'u'],
+  ['ǖ', 'ǘ', 'ǚ', 'ǜ', 'ü'],
+]
+
+def diacritic_vowel(vowel, tone):
+  """
+  :param str vowel: one of a e i o u ü
+  :param int tone: one of 1 2 3 4 5
+  :return str: the vowel with a diacritic added. For example, the args (a, 1) return ā, (i, 5) return i, and (ü, 3)
+      return ǚ.
+  """
+  for row in DIACRITIC_VOWELS:
+    if row[4] == vowel:
       return row[tone - 1]
 
 
-def toned_syl(syl):
+def diacritic_syl(syl):
+  """
+  :param str syl: An ASCII representation of a pinyin syllable with the tone at the end, e.g. ni3, ge5, lu:4. If it's
+      neutral tone, it must end in 5, and the two-character sequence u: is used to represent ü.
+  :return str: The syllable with the diacritic applied, e.g. nǐ, ge, lǜ.
+  """
   rv = []
   tone = int(syl[-1])
   curr = syl[0]
@@ -122,7 +134,7 @@ def toned_syl(syl):
     if (curr in 'ae'
         or not toned and curr == 'o' and next_ == 'u'
         or not toned and curr in 'aeiouü' and next_ not in 'aeiouü'):
-      rv.append(toned_char(curr, tone))
+      rv.append(diacritic_vowel(curr, tone))
       toned = True
     else:
       rv.append(curr)
@@ -130,6 +142,24 @@ def toned_syl(syl):
     curr = next_
 
   return ''.join(rv)
+
+
+def diacritic_syl_and_tone(syl):
+  """
+  Returns the syallable with a diacritic added and its tone as an int. If the syallable already has a diacritic, it's
+  left unchanged and the tone is inferred from it.
+
+  :param str syl: Either an ASCII representation of a pinyin syllable, like ni3, ge5, or lu:4, or a diacritic-based
+      representation like nǐ, ge, or lǜ.
+  :return (str, int): The syllable with a diacritic added and its tone. For example, both syl='ni3' and syl='nǐ' return
+      ('nǐ', 3), both syl='ge5' and syl='ge' return ('ge', 5), and both syl='lu:4' and syl='lǜ' return ('lǜ', 4).
+  """
+  if syl[-1] in '12345':
+    return diacritic_syl(syl), int(syl[-1])
+  for i, vowel_group in enumerate(zip(*DIACRITIC_VOWELS)):
+    if set(vowel_group) & set(syl):
+      return syl, i + 1
+  raise ValueError('diacritic_syl_and_tone got unexpected argument : {}'.format(syl))
 
 
 def prettify_defs(defs):
@@ -146,19 +176,28 @@ def prettify_defs(defs):
 
 
 def prettify_pinyin(p, lower=False):
+  """
+  Apply diacritics to pinyin and wrap each syllable in <span class="toneN"> tags.
+
+  :param str p: A series of pinyin characters separated by spaces, e.g. 'nu:3 ren2' or 'nǚ rén'.
+  :param bool lower: If true, will convert the string to lowercase before processing.
+  :return str: Pinyin string with diacritics and tone tags. For example, both p='nu:3 ren2' and p='nǚ rén' will return
+      '<span class="tone3">nǚ</span> <span class="tone2">rén</span>'.
+  """
+  if lower:
+    p = p.lower()
+
   rv = []
   for syl in p.split():
-    if syl[-1] not in '1234':
-      rv.append(syl.rstrip('5'))
-      continue
+    toned, tone = diacritic_syl_and_tone(syl)
 
-    tone = int(syl[-1])
-    toned = toned_syl(syl)
-    rv.append('<span class="tone{}">{}</span>'.format(tone, toned))
+    if tone == 5:
+      rv.append(toned)
+    else:
+      rv.append('<span class="tone{}">{}</span>'.format(tone, toned))
 
   rv = ' '.join(rv)
-  if lower:
-    rv = rv.lower()
+
   return rv
 
 
