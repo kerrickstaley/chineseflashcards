@@ -42,6 +42,13 @@
   text-align: left;
 }
 
+/* TODO clean up the centering of this so it looks nicer */
+.example_sentences_wrapper {
+  text-align: left;
+  display: inline-block;
+  line-height: 0.5;
+}
+
 .nobr {
   display:inline-block;
 }

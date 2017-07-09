@@ -222,6 +222,20 @@ def prettify_classifiers(clfrs, simp_first=False):
   return ', '.join(rv)
 
 
+def prettify_example_sentences(example_sentences):
+  if not example_sentences:
+    return ''
+
+  sent = example_sentences[0]
+  pieces = [sent.simp, sent.pinyin, sent.eng]
+
+  pieces = [p.replace('\n', '<br/>') for p in pieces]
+
+  pieces = ['<p>{}</p>'.format(p) for p in pieces]
+
+  return '\n'.join(pieces)
+
+
 @functools.lru_cache()
 def load_cedict():
   rv = collections.defaultdict(list)
@@ -393,6 +407,7 @@ class ChineseDeck(genanki.Deck):
         prettify_classifiers(word.clfrs),
         prettify_pinyin(word.tw_pinyin or ''),
         '',
+        '',
       ])
     self.add_note(note)
 
@@ -407,5 +422,6 @@ class ChineseDeck(genanki.Deck):
         prettify_pinyin(vocab_word.tw_pinyin or ''),
         # TODO: get rid of this last field ("words with same pinyin")
         '',
+        prettify_example_sentences(vocab_word.example_sentences),
       ])
     self.add_note(note)

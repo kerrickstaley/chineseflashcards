@@ -61,5 +61,14 @@
         "rtl": false,
         "size": 20,
         "sticky": false
+    },
+    {
+        "font": "Liberation Sans",
+        "media": [],
+        "name": "Example Sentences",
+        "ord": 7,
+        "rtl": false,
+        "size": 20,
+        "sticky": false
     }
 ]
