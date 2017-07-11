@@ -46,7 +46,10 @@
 .example_sentences_wrapper {
   text-align: left;
   display: inline-block;
-  line-height: 0.5;
+}
+
+.example_sentences_wrapper > p {
+  margin-bottom: -0.5em;
 }
 
 .nobr {
