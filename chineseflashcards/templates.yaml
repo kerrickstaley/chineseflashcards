@@ -26,6 +26,10 @@
       {{Example Sentences}}
     </div>
     {{/Example Sentences}}
+
+    <script>
+      SCRIPT
+    </script>
 - name: Simplified
   qfmt: |
     <div class="character">
@@ -62,6 +66,10 @@
       {{Example Sentences}}
     </div>
     {{/Example Sentences}}
+
+    <script>
+      SCRIPT
+    </script>
 - name: Traditional
   qfmt: |
     <div class="character">
@@ -96,6 +104,10 @@
       {{Example Sentences}}
     </div>
     {{/Example Sentences}}
+
+    <script>
+      SCRIPT
+    </script>
 - name: Pinyin
   qfmt: |
     <div class="pinyin">
@@ -106,6 +118,10 @@
         Not:&ensp;{{Words With Same Pinyin}}
       </div>
     {{/Words With Same Pinyin}}
+
+    <script>
+      SCRIPT
+    </script>
   afmt: |
     {{FrontSide}}
 
@@ -130,3 +146,6 @@
       {{Example Sentences}}
     </div>
     {{/Example Sentences}}
+    <script>
+      SCRIPT
+    </script>

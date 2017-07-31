@@ -19,6 +19,10 @@ TEMPLATES_FILE = os.path.join(
 CSS_FILE = os.path.join(
   os.path.dirname(os.path.abspath(__file__)),
   'cards.css')
+SCRIPT_FILE = os.path.join(
+  os.path.dirname(os.path.abspath(__file__)),
+  'add_pinyin_diacritics_and_color.js',
+)
 
 
 class ChineseNote(genanki.Note):
@@ -255,7 +259,7 @@ def load_cedict():
 
 @functools.lru_cache()
 def load_chinese_note_model():
-  with open(FIELDS_FILE) as fields, open(TEMPLATES_FILE) as templates, open(CSS_FILE) as css:
+  with open(FIELDS_FILE) as fields, open(TEMPLATES_FILE) as templates, open(CSS_FILE) as css, open(SCRIPT_FILE) as script:
     templates_formatted = templates.read()
     templates_formatted = templates_formatted.replace(
       'CHARACTER',
@@ -263,6 +267,16 @@ def load_chinese_note_model():
       '<span class="nobr">{{Simplified}}</span>')
     templates_formatted = templates_formatted.replace(
       'PINYIN', '{{#Taiwan Pinyin}}{{Taiwan Pinyin}} | {{/Taiwan Pinyin}}{{Pinyin}}')
+    script_contents = []
+    for i, line in enumerate(script.read().splitlines()):
+      if 'BEGIN TESTS' in line:
+        break
+      if i > 0:
+        line = '      ' + line
+      script_contents.append(line)
+    script_contents.append('      main();');
+    script_contents = '\n'.join(script_contents)
+    templates_formatted = templates_formatted.replace('SCRIPT', script_contents)
     return genanki.Model(
       CHINESE_NOTE_MODEL_ID,
       'Chinese',
