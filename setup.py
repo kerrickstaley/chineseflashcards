@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='chineseflashcards',
-      version='0.2',
+      version='0.3',
       description='Create Chinese flashcards for Anki using the genanki lib',
       url='http://github.com/kerrickstaley/chineseflashcards',
       author='Kerrick Staley',
