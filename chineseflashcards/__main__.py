@@ -2,8 +2,6 @@ from argparse import ArgumentParser
 import os
 import random
 
-from genanki import Package
-
 from . import ChineseDeck
 
 
@@ -35,4 +33,4 @@ with open(args.wordsfile) as words:
     word = word.strip()
     deck.add_word(word)
 
-Package(deck).write_to_file(args.outfile)
+deck.write_to_file(args.outfile)
