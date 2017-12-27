@@ -410,7 +410,7 @@ class ChineseDeck(genanki.Deck):
     with open(path) as h:
       self.add_preferred_words_yaml(h.read())
 
-  def add_word(self, word, alt_word=None, pinyin=None):
+  def add_word(self, word, alt_word=None, pinyin=None, tags=None):
     word = self._lookup_word(word, alt_word, pinyin)
     note = ChineseNote(
       fields=[
@@ -422,10 +422,12 @@ class ChineseDeck(genanki.Deck):
         prettify_pinyin(word.tw_pinyin or ''),
         '',
         '',
-      ])
+      ],
+      tags=tags,
+    )
     self.add_note(note)
 
-  def add_vocab_list_word(self, vocab_word):
+  def add_vocab_list_word(self, vocab_word, tags=None):
     note = ChineseNote(
       fields=[
         vocab_word.simp,
@@ -437,5 +439,7 @@ class ChineseDeck(genanki.Deck):
         # TODO: get rid of this last field ("words with same pinyin")
         '',
         prettify_example_sentences(vocab_word.example_sentences),
-      ])
+      ],
+      tags=tags,
+    )
     self.add_note(note)
