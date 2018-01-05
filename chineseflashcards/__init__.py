@@ -127,6 +127,11 @@ def diacritic_syl(syl):
       neutral tone, it must end in 5, and the two-character sequence u: is used to represent ü.
   :return str: The syllable with the diacritic applied, e.g. nǐ, ge, lǜ.
   """
+
+  # The syllable "r" is an edge case that sometimes appears
+  if syl == 'r':
+    return syl
+
   rv = []
   tone = int(syl[-1])
   curr = syl[0]
@@ -158,6 +163,11 @@ def diacritic_syl_and_tone(syl):
   :return (str, int): The syllable with a diacritic added and its tone. For example, both syl='ni3' and syl='nǐ' return
       ('nǐ', 3), both syl='ge5' and syl='ge' return ('ge', 5), and both syl='lu:4' and syl='lǜ' return ('lǜ', 4).
   """
+
+  # The syllable "r" is an edge case that occurs in a few places in CC-CEDICT
+  if syl in ('r', 'r5'):
+    return 'r', 5
+
   if syl[-1] in '12345':
     return diacritic_syl(syl), int(syl[-1])
   for i, vowel_group in enumerate(zip(*DIACRITIC_VOWELS)):
