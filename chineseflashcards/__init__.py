@@ -150,7 +150,7 @@ def diacritic_syl(syl):
 
 def diacritic_syl_and_tone(syl):
   """
-  Returns the syallable with a diacritic added and its tone as an int. If the syallable already has a diacritic, it's
+  Returns the syllable with a diacritic added and its tone as an int. If the syllable already has a diacritic, it's
   left unchanged and the tone is inferred from it.
 
   :param str syl: Either an ASCII representation of a pinyin syllable, like ni3, ge5, or lu:4, or a diacritic-based
