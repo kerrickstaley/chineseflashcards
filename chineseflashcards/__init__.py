@@ -421,6 +421,11 @@ class ChineseDeck(genanki.Deck):
       self.add_preferred_words_yaml(h.read())
 
   def add_word(self, word, alt_word=None, pinyin=None, tags=None):
+    """
+    Add word by hanzi (e.g. pass word='你好' to add that word to the deck).
+
+    Returns the Note that was added.
+    """
     word = self._lookup_word(word, alt_word, pinyin)
     note = ChineseNote(
       fields=[
@@ -436,8 +441,14 @@ class ChineseDeck(genanki.Deck):
       tags=tags,
     )
     self.add_note(note)
+    return note
 
   def add_vocab_list_word(self, vocab_word, tags=None):
+    """
+    Add a word from the chinese_vocab_list package.
+
+    Returns the Note that was added.
+    """
     note = ChineseNote(
       fields=[
         vocab_word.simp,
@@ -453,3 +464,4 @@ class ChineseDeck(genanki.Deck):
       tags=tags,
     )
     self.add_note(note)
+    return note
