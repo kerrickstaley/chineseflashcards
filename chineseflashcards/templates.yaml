@@ -32,11 +32,11 @@
     </script>
 - name: HanziSimp
   qfmt: |
-    {{#Generate Simp Card}}
+    {{#Generate HanziSimp Card}}
     <div class="character">
       {{Simplified}}
     </div>
-    {{/Generate Simp Card}}
+    {{/Generate HanziSimp Card}}
   afmt: |
     {{FrontSide}}
 
@@ -72,11 +72,11 @@
     </script>
 - name: HanziTrad
   qfmt: |
-    {{#Generate Trad Card}}
+    {{#Generate HanziTrad Card}}
     <div class="character">
       {{Traditional}}
     </div>
-    {{/Generate Trad Card}}
+    {{/Generate HanziTrad Card}}
   afmt: |
     {{FrontSide}}
 
@@ -112,11 +112,11 @@
     </script>
 - name: HanziBoth
   qfmt: |
-    {{#Generate Both Card}}
+    {{#Generate HanziBoth Card}}
     <div class="character">
       {{Traditional}}
     </div>
-    {{/Generate Both Card}}
+    {{/Generate HanziBoth Card}}
   afmt: |
     {{FrontSide}}
 

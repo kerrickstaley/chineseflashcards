@@ -74,7 +74,7 @@
     {
         "font": "Liberation Sans",
         "media": [],
-        "name": "Generate Simp Card",
+        "name": "Generate HanziSimp Card",
         "ord": 8,
         "rtl": false,
         "size": 20,
@@ -83,7 +83,7 @@
     {
         "font": "Liberation Sans",
         "media": [],
-        "name": "Generate Trad Card",
+        "name": "Generate HanziTrad Card",
         "ord": 9,
         "rtl": false,
         "size": 20,
@@ -92,7 +92,7 @@
     {
         "font": "Liberation Sans",
         "media": [],
-        "name": "Generate Both Card",
+        "name": "Generate HanziBoth Card",
         "ord": 10,
         "rtl": false,
         "size": 20,
