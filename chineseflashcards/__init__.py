@@ -241,7 +241,9 @@ def prettify_example_sentences(example_sentences):
     return ''
 
   sent = example_sentences[0]
-  pieces = [sent.simp, sent.pinyin, sent.eng]
+  pieces = [sent.trad, sent.pinyin, sent.eng]
+  if sent.simp:
+    pieces.insert(1, sent.simp)
 
   pieces = [p.replace('\n', '<br/>') for p in pieces]
 
