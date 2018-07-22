@@ -30,11 +30,13 @@
     <script>
       SCRIPT
     </script>
-- name: Simplified
+- name: HanziSimp
   qfmt: |
+    {{#Generate Simp Card}}
     <div class="character">
       {{Simplified}}
     </div>
+    {{/Generate Simp Card}}
   afmt: |
     {{FrontSide}}
 
@@ -44,12 +46,10 @@
       PINYIN
     </div>
 
-    {{#Traditional}}
     <div class="character_wrapper">
       <span class="character">{{Traditional}}</span>
       <span class="character_type">&nbsp;&nbsp;Trad</span>
     </div>
-    {{/Traditional}}
 
     {{#Classifier}}
     <div class="classifier">
@@ -70,11 +70,13 @@
     <script>
       SCRIPT
     </script>
-- name: Traditional
+- name: HanziTrad
   qfmt: |
+    {{#Generate Trad Card}}
     <div class="character">
       {{Traditional}}
     </div>
+    {{/Generate Trad Card}}
   afmt: |
     {{FrontSide}}
 
@@ -87,6 +89,41 @@
     <div class="character_wrapper">
       <span class="character">{{Simplified}}</span>
       <span class="character_type">&nbsp;&nbsp;Simp</span>
+    </div>
+
+    {{#Classifier}}
+    <div class="classifier">
+      CL: {{Classifier}}
+    </div>
+    {{/Classifier}}
+
+    <div class="english_wrapper">
+      {{English}}
+    </div>
+
+    {{#Example Sentences}}
+    <div class="example_sentences_wrapper">
+      {{Example Sentences}}
+    </div>
+    {{/Example Sentences}}
+
+    <script>
+      SCRIPT
+    </script>
+- name: HanziBoth
+  qfmt: |
+    {{#Generate Both Card}}
+    <div class="character">
+      {{Traditional}}
+    </div>
+    {{/Generate Both Card}}
+  afmt: |
+    {{FrontSide}}
+
+    <hr id=answer>
+
+    <div class="pinyin">
+      PINYIN
     </div>
 
     {{#Classifier}}

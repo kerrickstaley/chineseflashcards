@@ -70,5 +70,32 @@
         "rtl": false,
         "size": 20,
         "sticky": false
+    },
+    {
+        "font": "Liberation Sans",
+        "media": [],
+        "name": "Generate Simp Card",
+        "ord": 8,
+        "rtl": false,
+        "size": 20,
+        "sticky": false
+    },
+    {
+        "font": "Liberation Sans",
+        "media": [],
+        "name": "Generate Trad Card",
+        "ord": 9,
+        "rtl": false,
+        "size": 20,
+        "sticky": false
+    },
+    {
+        "font": "Liberation Sans",
+        "media": [],
+        "name": "Generate Both Card",
+        "ord": 10,
+        "rtl": false,
+        "size": 20,
+        "sticky": false
     }
 ]

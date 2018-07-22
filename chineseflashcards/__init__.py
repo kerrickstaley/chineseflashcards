@@ -432,13 +432,16 @@ class ChineseDeck(genanki.Deck):
     note = ChineseNote(
       fields=[
         word.simp,
-        word.trad if word.trad != word.simp else '',
+        word.trad,
         prettify_pinyin(word.pinyin, True),
         prettify_defs(word.defs),
         prettify_classifiers(word.clfrs),
         prettify_pinyin(word.tw_pinyin or ''),
         '',
         '',
+        '' if word.trad == word.simp else 'y',
+        '' if word.trad == word.simp else 'y',
+        'y' if word.trad == word.simp else '',
       ],
       tags=tags,
     )
@@ -454,7 +457,7 @@ class ChineseDeck(genanki.Deck):
     note = ChineseNote(
       fields=[
         vocab_word.simp,
-        vocab_word.trad if vocab_word.trad != vocab_word.simp else '',
+        vocab_word.trad,
         prettify_pinyin(vocab_word.pinyin, True),
         prettify_defs(vocab_word.defs),
         prettify_classifiers(vocab_word.clfrs),
@@ -462,6 +465,9 @@ class ChineseDeck(genanki.Deck):
         # TODO: get rid of this last field ("words with same pinyin")
         '',
         prettify_example_sentences(vocab_word.example_sentences),
+        '' if vocab_word.trad == vocab_word.simp else 'y',
+        '' if vocab_word.trad == vocab_word.simp else 'y',
+        'y' if vocab_word.trad == vocab_word.simp else '',
       ],
       tags=tags,
     )
