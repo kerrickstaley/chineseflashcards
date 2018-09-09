@@ -256,7 +256,7 @@ def prettify_example_sentences(example_sentences):
 def load_cedict():
   rv = collections.defaultdict(list)
 
-  with open(CEDICT_FILE) as inf:
+  with open(CEDICT_FILE, encoding='utf-8') as inf:
     for line in inf:
       if line.startswith('#'):
         continue
