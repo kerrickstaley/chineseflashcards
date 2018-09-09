@@ -271,7 +271,8 @@ def load_cedict():
 
 @functools.lru_cache()
 def load_chinese_note_model():
-  with open(FIELDS_FILE) as fields, open(TEMPLATES_FILE) as templates, open(CSS_FILE) as css, open(SCRIPT_FILE) as script:
+  with open(FIELDS_FILE, encoding='utf-8') as fields, open(TEMPLATES_FILE, encoding='utf-8') as templates, \
+      open(CSS_FILE, encoding='utf-8') as css, open(SCRIPT_FILE, encoding='utf-8') as script:
     templates_formatted = templates.read()
     templates_formatted = templates_formatted.replace(
       'CHARACTER',
@@ -419,7 +420,7 @@ class ChineseDeck(genanki.Deck):
     Same as add_preferred_words_yaml, but loads from a file.
     :param path: path to file.
     """
-    with open(path) as h:
+    with open(path, encoding='utf-8') as h:
       self.add_preferred_words_yaml(h.read())
 
   def add_word(self, word, alt_word=None, pinyin=None, tags=None):
