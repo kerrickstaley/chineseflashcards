@@ -43,6 +43,9 @@ function diacriticSyl(syl) {
 
 function prettifyPinyin(pinyin) {
   return pinyin.split(' ').map(function(syl) {
+    if (isNaN(parseInt(syl[syl.length - 1]))) {
+      syl += '5';
+    }
     return '<span class="tone' + syl[syl.length - 1] + '">' + diacriticSyl(syl) + '</span>';
   }).join(' ');
 }
@@ -72,10 +75,13 @@ var testCases = [
   ["diacriticSyl('ge5')", 'ge'],
   ["prettifyPinyin('he1 dian3 lu:4 cha2 ba5')",
    '<span class="tone1">hē</span>'
-   + '<span class="tone3">diǎn</span>'
-   + '<span class="tone4">lǜ</span>'
-   + '<span class="tone2">chá</span>'
-   + '<span class="tone5">ba</span>'],
+   + ' <span class="tone3">diǎn</span>'
+   + ' <span class="tone4">lǜ</span>'
+   + ' <span class="tone2">chá</span>'
+   + ' <span class="tone5">ba</span>'],
+  ["prettifyPinyin('ge de')",
+   '<span class="tone5">ge</span>'
+   + ' <span class="tone5">de</span>'],
 ];
 
 testCases.forEach(function(testCase) {
