@@ -84,11 +84,18 @@ var testCases = [
    + ' <span class="tone5">de</span>'],
 ];
 
+var passed = 0;
 testCases.forEach(function(testCase) {
   var actual = eval(testCase[0]);
   if (eval(testCase[0]) == testCase[1]) {
-    console.log('PASSED');
+    passed += 1;
   } else {
-    console.log('FAILED: evaluated ' + testCase[0] + ' expected ' + testCase[1] + ' actual ' + actual);
+    console.log('TEST CASE FAILED: evaluated ' + testCase[0] + ' expected ' + testCase[1] + ' actual ' + actual);
   }
 });
+console.log('add_pinyin_diacritics_and_color.js: '
+            + passed.toString()
+            + '/'
+            + testCases.length.toString()
+            + ' cases passed');
+process.exit(passed == testCases.length ? 0 : 1);
