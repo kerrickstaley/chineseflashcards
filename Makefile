@@ -1,3 +1,7 @@
+.PHONY: install
+install:
+	python3 setup.py install --user
+
 test:
 	py.test tests
 	node chineseflashcards/add_pinyin_diacritics_and_color.js
