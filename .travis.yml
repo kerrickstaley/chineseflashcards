@@ -2,5 +2,5 @@ language: python
 python:
   - '3.6'
 dist: trusty
-install: 'make install'
+install: 'python setup.py install'
 script: 'make test'
