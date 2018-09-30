@@ -5,6 +5,7 @@ import os.path
 import re
 import yaml
 
+__version__ = '0.4.5'
 
 CHINESE_NOTE_MODEL_ID = 2828301746
 CEDICT_FILE = os.path.join(
