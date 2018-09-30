@@ -1,8 +1,11 @@
 from setuptools import setup
-from chineseflashcards import __version__
+
+version = {}
+with open('chineseflashcards/version.py') as fp:
+  exec(fp.read(), version)
 
 setup(name='chineseflashcards',
-      version=__version__,
+      version=version['__version__'],
       description='Create Chinese flashcards for Anki using the genanki lib',
       url='http://github.com/kerrickstaley/chineseflashcards',
       author='Kerrick Staley',
