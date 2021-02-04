@@ -1,9 +1,9 @@
 import collections
 import functools
-import genanki
+from .. import genanki
 import os.path
 import re
-import yaml
+from .. import yaml
 
 from .version import __version__
 
