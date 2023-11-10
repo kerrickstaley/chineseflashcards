@@ -84,3 +84,7 @@
 .tone4 {
   color: #0000ff;
 }
+
+.nightMode .tone4 {
+  color: #6666ff;
+}
